@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Holi Special Wish</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#ff007f',
+                        secondary: '#00f0ff',
+                        tertiary: '#ffaa00',
+                        quaternary: '#9d00ff',
+                        dark: '#0a0a0a',
+                    },
+                    fontFamily: {
+                        display: ['"Fredoka One"', 'cursive'],
+                        body: ['Poppins', 'sans-serif'],
+                    },
+                    animation: {
+                        'slow-spin': 'spin 15s linear infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0) scale(1)' },
+                            '50%': { transform: 'translateY(-20px) scale(1.05)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0a0a0a;
+            color: #ffffff;
+            overflow-x: hidden;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .glass-card {
+            background: rgba(20, 20, 20, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+        }
+
+        .gradient-text {
+            background: linear-gradient(
+                to right, 
+                #ff007f, #ffaa00, #00f0ff, #9d00ff, #ff007f
+            );
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: shine 4s linear infinite;
+        }
+
+        @keyframes shine {
+            to { background-position: 200% center; }
+        }
+
+        .bg-shape {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: 0;
+            opacity: 0.5;
+            animation: floatShape 15s infinite alternate ease-in-out;
+        }
+
+        @keyframes floatShape {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(100px, 50px) rotate(90deg); }
+        }
+
+        .input-glow:focus {
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+            border-color: #00f0ff;
+        }
+
+        .btn-gradient {
+            background: linear-gradient(135deg, #ff007f 0%, #9d00ff 100%);
+            transition: all 0.3s ease;
+        }
+
+        .btn-gradient:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -5px rgba(255, 0, 127, 0.5);
+        }
+
+        .btn-gradient:active {
+            transform: scale(0.95);
+        }
+
+        .name-text {
+            text-shadow: 0 0 15px rgba(255, 170, 0, 0.5);
+        }
+
+        #color-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+
+    <!-- Dynamic Background Elements -->
+    <div id="app-container" class="fixed inset-0 overflow-hidden pointer-events-none">
+        <div class="bg-shape w-96 h-96 bg-primary -top-20 -left-20" style="animation-delay: 0s;"></div>
+        <div class="bg-shape w-80 h-80 bg-secondary bottom-10 -right-10" style="animation-delay: -5s;"></div>
+        <div class="bg-shape w-64 h-64 bg-tertiary top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" style="opacity: 0.3; animation-delay: -2s;"></div>
+    </div>
+
+    <!-- Canvas for Particle Effects -->
+    <canvas id="color-canvas"></canvas>
+
+    <!-- Main Content Card -->
+    <main class="glass-card relative z-10 w-full max-w-lg rounded-[2rem] p-8 md:p-12 text-center fade-in-up">
+        
+        <!-- Header Badge -->
+        <div class="mb-6">
+            <span class="inline-block px-4 py-1.5 rounded-full bg-white/10 border border-white/20 text-xs font-bold uppercase tracking-widest animate-pulse-slow">
+                Festival of Colors 🎨
+            </span>
+        </div>
+
+        <!-- Greeting Section -->
+        <div class="space-y-2 mb-8">
+            <h2 class="text-xl md:text-2xl font-light text-gray-300">Wishing You a Very</h2>
+            <h1 class="main-title font-display text-5xl md:text-7xl gradient-text mb-4">HAPPY HOLI</h1>
+        </div>
+
+        <!-- Sender Message -->
+        <div class="bg-white/5 border border-dashed border-white/20 rounded-2xl p-6 mb-8 transform hover:scale-[1.02] transition-transform">
+            <span id="sender-label" class="block text-sm text-gray-400 mb-2">A colorful wish from:</span>
+            <h2 id="display-name" class="name-text font-display text-3xl md:text-4xl text-tertiary animate-float">Someone Special</h2>
+            <p class="message-text mt-4 text-gray-300 leading-relaxed italic">
+                "May your life be as colorful and joyful as the festival itself. Let's spread love and happiness!"
+            </p>
+        </div>
+
+        <!-- Interactive Interaction Section -->
+        <section id="interaction-section" class="pt-6 border-t border-white/10">
+            
+            <!-- Link Creation Form -->
+            <div id="create-link-section">
+                <p class="text-sm text-gray-400 mb-6">Create your own personalized wish to share!</p>
+                <div class="flex flex-col gap-4">
+                    <input 
+                        type="text" 
+                        id="user-name-input" 
+                        placeholder="Enter your name here..." 
+                        maxlength="25" 
+                        autocomplete="off"
+                        class="w-full bg-white/5 border border-white/20 rounded-xl px-5 py-4 text-white focus:outline-none input-glow transition-all"
+                    >
+                    <button 
+                        id="generate-btn" 
+                        class="btn-gradient w-full py-4 rounded-xl font-bold text-lg text-white shadow-lg"
+                    >
+                        Create Wish Link
+                    </button>
+                </div>
+            </div>
+
+            <!-- Share Section (Initially Hidden) -->
+            <div id="share-link-section" class="hidden space-y-4">
+                <p class="text-secondary font-semibold text-lg animate-bounce">🎉 Your unique link is ready!</p>
+                
+                <div class="flex flex-col gap-3">
+                    <button id="whatsapp-btn" class="flex items-center justify-center gap-3 bg-[#25D366] hover:bg-[#20ba5a] text-white py-4 rounded-xl font-bold transition-all shadow-lg">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                        Share on WhatsApp
+                    </button>
+                    
+                    <button id="copy-btn" class="flex items-center justify-center gap-3 bg-white/10 border border-white/20 hover:bg-white/20 text-white py-4 rounded-xl font-bold transition-all">
+                        <span>🔗</span> Copy Unique Link
+                    </button>
+                </div>
+
+                <button id="reset-btn" class="text-gray-400 hover:text-white text-sm underline underline-offset-4 mt-4 block w-full">
+                    Create another link
+                </button>
+            </div>
+
+        </section>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // DOM Elements
+            const userNameInput = document.getElementById('user-name-input');
+            const generateBtn = document.getElementById('generate-btn');
+            const displayName = document.getElementById('display-name');
+            const createSection = document.getElementById('create-link-section');
+            const shareSection = document.getElementById('share-link-section');
+            const whatsappBtn = document.getElementById('whatsapp-btn');
+            const copyBtn = document.getElementById('copy-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const canvas = document.getElementById('color-canvas');
+            const ctx = canvas.getContext('2d');
+
+            let generatedLink = "";
+            let particles = [];
+            const colors = ['#ff007f', '#00f0ff', '#ffaa00', '#9d00ff', '#ffffff'];
+
+            // 1. Initialize Name from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const senderName = urlParams.get('n');
+
+            function sanitize(str) {
+                const div = document.createElement('div');
+                div.textContent = str;
+                return div.innerHTML;
+            }
+
+            if (senderName) {
+                displayName.textContent = sanitize(senderName);
+                setTimeout(createColorBurst, 800);
+            } else {
+                displayName.textContent = "Your Loved Ones";
+            }
+
+            // 2. Particle System Logic
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+
+            class Particle {
+                constructor(x, y, isExplosion = false) {
+                    this.x = x;
+                    this.y = y;
+                    this.size = Math.random() * 8 + 4;
+                    this.speedX = (Math.random() - 0.5) * (isExplosion ? 15 : 4);
+                    this.speedY = isExplosion ? (Math.random() - 0.5) * 15 : (Math.random() * -3 - 2);
+                    this.color = colors[Math.floor(Math.random() * colors.length)];
+                    this.gravity = isExplosion ? 0.2 : -0.01;
+                    this.life = 1.0;
+                    this.decay = Math.random() * 0.02 + 0.005;
+                    this.rotation = Math.random() * 360;
+                    this.rotationSpeed = (Math.random() - 0.5) * 10;
+                }
+
+                update() {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+                    this.speedY += this.gravity;
+                    this.life -= this.decay;
+                    this.rotation += this.rotationSpeed;
+                }
+
+                draw() {
+                    ctx.save();
+                    ctx.translate(this.x, this.y);
+                    ctx.rotate(this.rotation * Math.PI / 180);
+                    ctx.globalAlpha = this.life;
+                    ctx.fillStyle = this.color;
+                    
+                    // Draw a soft organic circle
+                    ctx.beginPath();
+                    ctx.arc(0, 0, this.size, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.restore();
+                }
+            }
+
+            function createColorBurst() {
+                const originX = canvas.width / 2;
+                const originY = canvas.height / 2;
+                for (let i = 0; i < 80; i++) {
+                    particles.push(new Particle(originX, originY, true));
+                }
+            }
+
+            // Continuous floating background particles
+            setInterval(() => {
+                if (particles.length < 100) {
+                    particles.push(new Particle(Math.random() * canvas.width, canvas.height + 20));
+                }
+            }, 200);
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                for (let i = particles.length - 1; i >= 0; i--) {
+                    particles[i].update();
+                    particles[i].draw();
+                    if (particles[i].life <= 0) {
+                        particles.splice(i, 1);
+                    }
+                }
+                requestAnimationFrame(animate);
+            }
+            animate();
+
+            // 3. User Interactions
+            generateBtn.addEventListener('click', () => {
+                const name = userNameInput.value.trim();
+                if (!name) {
+                    userNameInput.classList.add('border-red-500');
+                    userNameInput.focus();
+                    return;
+                }
+                
+                userNameInput.classList.remove('border-red-500');
+                const baseUrl = window.location.origin + window.location.pathname;
+                generatedLink = `${baseUrl}?n=${encodeURIComponent(name)}`;
+                
+                createSection.classList.add('hidden');
+                shareSection.classList.remove('hidden');
+                createColorBurst();
+            });
+
+            whatsappBtn.addEventListener('click', () => {
+                const text = `Hey! 🌈 Look at this special Holi wish for you from ${userNameInput.value.trim() || 'me'}: ${generatedLink}`;
+                window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
+            });
+
+            copyBtn.addEventListener('click', async () => {
+                try {
+                    await navigator.clipboard.writeText(generatedLink);
+                    const originalText = copyBtn.innerHTML;
+                    copyBtn.innerHTML = "✅ Copied to Clipboard!";
+                    copyBtn.classList.add('bg-green-600/20', 'border-green-500');
+                    setTimeout(() => {
+                        copyBtn.innerHTML = originalText;
+                        copyBtn.classList.remove('bg-green-600/20', 'border-green-500');
+                    }, 2500);
+                } catch (err) {
+                    alert("Failed to copy link. Please manually copy the URL.");
+                }
+            });
+
+            resetBtn.addEventListener('click', () => {
+                userNameInput.value = "";
+                shareSection.classList.add('hidden');
+                createSection.classList.remove('hidden');
+            });
+        });
+    </script>
+</body>
+</html>
